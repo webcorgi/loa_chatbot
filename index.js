@@ -1,14 +1,3 @@
-const Ninav = [
-    '날 믿어',
-    '루페온이시여 우릴 지켜주세요',
-    '모두에게 빛의 가호를',
-    '모두 힘을 내',
-    '파르쿠나스 이곳에 빛을 내려줘',
-    '혼돈의 땅에 빛의 비를',
-    '내가 지켜줄게',
-    '전혀 성장하지 않았구나 쿠크세이튼',
-]
-
 /*********************************************************************************
  * LOA API 정보
  * 분당 100회 호출가능. 길드내 사용 용도라면 사실상 무제한. 그리고 무료.
@@ -30,8 +19,39 @@ const callApi = (url) => {
             },
     })
 }
+/*********************************************************************************
+ * 니나브 대사
+*********************************************************************************/
+const Ninav = [
+    '날 믿어',
+    '루페온이시여 우릴 지켜주세요',
+    '모두에게 빛의 가호를',
+    '모두 힘을 내',
+    '파르쿠나스 이곳에 빛을 내려줘',
+    '혼돈의 땅에 빛의 비를 !',
+    '내가 지켜줄게 !',
+    '전혀 성장하지 않았구나 쿠크세이튼 !',
+]
+const callNinav = () => {
+    const leng = Ninav.length
+    const num = parseInt(Math.random(leng)*10)
+    return SP + SP + Ninav[num]
+}
 
-
+const NinavPretty = [
+    'ദ്ദി*ˊᗜˋ*) 칭찬 고마워. 너도 이뻐',
+    '(｡♥‿♥｡) 고마워. 나도 이쁜거 알고 있어',
+    'ଘ(੭ˊᵕˋ)੭* ੈ✩‧₊˚ 니가 말 안해도 이쁜거 이미 알아',
+    '(๑•‿•๑) 이쁘다고 해줘서 고마워',
+    '(๑ᵔ⩊ᵔ๑) 혼돈의 땅에 이쁜 나를 !',
+]
+const NinavCuty = [
+    '( ˃ ⩌˂) 나 귀여워? ㅎㅎㅎㅎ',
+    '(*˘◡˘*) 내가 귀엽다니 부끄럽네',
+    '◝(・▿・)◜ 이 정도 귀여움은 기본인데 ?',
+    'ദ്ദി⑉¯ ꇴ ¯⑉ ) 아이참 ~ 너두 너무 귀여워',
+    '(￣▽￣)ノ 역시 넌 보는 눈이 있네. 난 너무 귀여워',
+]
 /*********************************************************************************
     ※ 메신저봇R 파라미터 정보
         string room: 방 이름
@@ -45,7 +65,6 @@ const callApi = (url) => {
         ImageDB imageDB: 이미지 정보를 담고 있는 객체(후술)
         string packageName: 알림을 띄운 메신저앱의 패키지 이름 (예컨대, 카카오톡의 경우 com.kakao.talk)
  *********************************************************************************/
-
 function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
     if (msg == callMark + '테스트') {
         getTest(replier)
@@ -58,6 +77,35 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
     }
     if (msg == callMark + '도어던') {
         getAbyssdungeons(replier)
+    }
+
+    /* 니나브 */
+    if (
+        msg.includes('이쁨') &&
+        msg.includes('이뻐') &&
+        msg.includes('이쁘') &&
+        msg.includes('이뻤') &&
+        msg.includes('이쁜') &&
+        msg.includes('예쁨') &&
+        msg.includes('예뻐') &&
+        msg.includes('예쁘') &&
+        msg.includes('예쁜')
+    ) {
+        const leng = NinavPretty.length
+        const num = parseInt(Math.random(leng)*10)
+        replier.reply(NinavPretty[num])
+    }
+    if (
+        msg.includes('귀염') &&
+        msg.includes('귀엽') &&
+        msg.includes('커여') &&
+        msg.includes('귀여') &&
+        msg.includes('기여') &&
+        msg.includes('커엽')
+    ) {
+        const leng = NinavCuty.length
+        const num = parseInt(Math.random(leng)*10)
+        replier.reply(NinavCuty[num])
     }
 }
 

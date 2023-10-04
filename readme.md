@@ -25,3 +25,7 @@
 #### 메신저봇R
 
 - https://omble-blog.tistory.com/5
+
+#### 니나브멘트용 특수문자 이모티콘
+
+- https://snskeyboard.com/emoticon/
