@@ -34,6 +34,10 @@
 
 - https://snskeyboard.com/emoticon/
 
+#### 안드로이드용 비동기 소스 참고
+
+- https://quantrader.tistory.com/128
+
 </div>
 </details>
 
