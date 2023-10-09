@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Data Display</title>
+</head>
+
+<body>
+    <div id="data-container"></div>
+    <script>
+        const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktYMk40TkRDSTJ5NTA5NWpjTWk5TllqY2lyZyIsImtpZCI6IktYMk40TkRDSTJ5NTA5NWpjTWk5TllqY2lyZyJ9.eyJpc3MiOiJodHRwczovL2x1ZHkuZ2FtZS5vbnN0b3ZlLmNvbSIsImF1ZCI6Imh0dHBzOi8vbHVkeS5nYW1lLm9uc3RvdmUuY29tL3Jlc291cmNlcyIsImNsaWVudF9pZCI6IjEwMDAwMDAwMDAzMzYyODkifQ.DrLSiETKB122vIjiFKFV2LPomFxp-iP-5RQD6SpEVhblc5AzGVmHdDoX2uhig9Et2DVgDYWBccfh61Z3gbARfWrGfeFlzVmlBrMnZD8AIkdhgHiH6xc3Wfgx6Q2dMlCkQ-EP2fqmsrqSviMh-l0yqZW5ZA6SeAj9qA8WVhbba53Jh27Z8gwls1-We8rod__JSpkXh1s-16kZqXlYRytpSJ5n6vFgQPK1oOobJtLlyAVLpyq3YiyLboboVXTDAMbLf4fSVguGWtCSMGp4zKuU6JoGhpkuquWbcocPrPyzRU9wd_C4CKXvoBF1NsBLMZeL8h3LR2pvraiBosGq5C7W3w';
+
+        /*************************************
+            API 검증 
+        *************************************/
+       const url = 'https://developer-lostark.game.onstove.com/gamecontents/calendar'
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                //console.log(data.Raids[0].Name) // 헬가이아
+                console.log(data) // 헬가이아
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+            </script>
+</body>
+<!-- {"Raids":[{"Name":"헬가이아","Description":"헬가이아는 화려한 깃털을 가진 거대한 새로 싸움이 시작되면 깃털이 점차 불꽃으로 덮여가며 더욱 강력해진다.\\n헬가이아는 불 속에서 되살아나는 신령한 새라는 전설이 있다.","MinCharacterLevel":50,"MinItemLevel":1250,"RequiredClearRaid":null,"StartTime":"2023-09-20 06:00","EndTime":"2023-10-11 05:59","Image":"https://cdn-lostark.game.onstove.com/efui_iconatlas/monster_icon_info/monster_icon_info_1.png"},{"Name":"아카테스","Description":"눈부신 빛의 날개를 지닌 아카테스는 성스러운 힘으로 모든 존재를 압도하는 위용을 지니고 있다.","MinCharacterLevel":50,"MinItemLevel":1250,"RequiredClearRaid":null,"StartTime":"2023-09-27 06:00","EndTime":"2023-10-18 05:59","Image":"https://cdn-lostark.game.onstove.com/efui_iconatlas/monster_icon_info/monster_icon_info_16.png"},{"Name":"루메루스+","Description":"짙은 안개 속에서 머무는 가디언 루메루스는, 자신의 앞에 나타난 모험가들을 광휘의 빛으로 시험한다.","MinCharacterLevel":50,"MinItemLevel":1250,"RequiredClearRaid":null,"StartTime":"2023-10-04 06:00","EndTime":"2023-10-25 05:59","Image":"https://cdn-lostark.game.onstove.com/efui_iconatlas/monster_icon_info/monster_icon_info_18.png"}],"RewardItems":[{"ExpeditionItemLevel":1,"Items":[]},{"ExpeditionItemLevel":1250,"Items":[]},{"ExpeditionItemLevel":1415,"Items":[]},{"ExpeditionItemLevel":1460,"Items":[]},{"ExpeditionItemLevel":1490,"Items":[]},{"ExpeditionItemLevel":1540,"Items":[]},{"ExpeditionItemLevel":1580,"Items":[]},{"ExpeditionItemLevel":1610,"Items":[]},{"ExpeditionItemLevel":1630,"Items":[]}]} -->
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Data Display</title>
+</head>
+
+<body>
+    <div id="data-container"></div>
+    <script>
+        const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktYMk40TkRDSTJ5NTA5NWpjTWk5TllqY2lyZyIsImtpZCI6IktYMk40TkRDSTJ5NTA5NWpjTWk5TllqY2lyZyJ9.eyJpc3MiOiJodHRwczovL2x1ZHkuZ2FtZS5vbnN0b3ZlLmNvbSIsImF1ZCI6Imh0dHBzOi8vbHVkeS5nYW1lLm9uc3RvdmUuY29tL3Jlc291cmNlcyIsImNsaWVudF9pZCI6IjEwMDAwMDAwMDAzMzYyODkifQ.DrLSiETKB122vIjiFKFV2LPomFxp-iP-5RQD6SpEVhblc5AzGVmHdDoX2uhig9Et2DVgDYWBccfh61Z3gbARfWrGfeFlzVmlBrMnZD8AIkdhgHiH6xc3Wfgx6Q2dMlCkQ-EP2fqmsrqSviMh-l0yqZW5ZA6SeAj9qA8WVhbba53Jh27Z8gwls1-We8rod__JSpkXh1s-16kZqXlYRytpSJ5n6vFgQPK1oOobJtLlyAVLpyq3YiyLboboVXTDAMbLf4fSVguGWtCSMGp4zKuU6JoGhpkuquWbcocPrPyzRU9wd_C4CKXvoBF1NsBLMZeL8h3LR2pvraiBosGq5C7W3w'
+        
+        const SP = '\n'
+        /*************************************
+            API 검증 (정보 캐릭터)
+        *************************************/
+        const defaultUrl = 'https://developer-lostark.game.onstove.com'
+        const encodedName = encodeURIComponent('바이낸스2022');
+        const url = defaultUrl+'/characters/'+encodedName+'/siblings'
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                
+                let text = '';
+    let serverData = {}; // Create an object to group data by ServerName
+
+    for (let i = 0; i < data.length; i++) {
+        const currentServerName = data[i].ServerName;
+        
+        if (!serverData[currentServerName]) {
+            serverData[currentServerName] = []; // Initialize an array for each unique ServerName
+        }
+
+        serverData[currentServerName].push(
+            '[' + data[i].CharacterClassName + '] ' +
+            data[i].CharacterName + ' / ' +
+            data[i].ItemAvgLevel + '레벨'
+        );
+    }
+
+    for (const serverName in serverData) {
+        if (serverData.hasOwnProperty(serverName)) {
+            text += '★' + serverName + '  \n';
+            text += serverData[serverName].join('\n') + '\n\n';
+        }
+    }
+                console.log(text)
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+            </script>
+</body>
+
+<!-- 
+
+
+    
+ -->
+</html>
