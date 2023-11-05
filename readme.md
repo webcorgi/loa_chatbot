@@ -36,7 +36,8 @@
 
 #### 안드로이드용 비동기 소스 참고
 
-- https://quantrader.tistory.com/128
+- 기본사용 https://quantrader.tistory.com/128
+- 상세사용 https://partnerjun.tistory.com/42
 
 </div>
 </details>

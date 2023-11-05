@@ -9,6 +9,8 @@ const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktYMk40TkRDSTJ5NTA5
 const callMark = '/'
 const SP = '\n' // 다음 줄로 넘기기 (Spacing)
 
+const kloaUrl = 'https://kloa.gg/'
+
 // API
 /* 231009 웹 구문 => 안드로이드구문으로 변경
 const callApi = (url) => {
@@ -32,6 +34,30 @@ const callApi = (url) => {
 
         let data = JSON.parse(response.text());
         return data
+    }catch(err){
+        console.log(err)
+    }
+}
+
+const callApiCrawling = (url) => {
+    try{
+        let response = org.jsoup.Jsoup.connect(url)
+        .header("Authorization", "Bearer " + apiKey)
+        .header("Content-Type", "application/json")
+        .ignoreContentType(true)
+        .get();
+
+        let cards = response.select("div[id='schedule-box_cards']")
+        let jsonArray = [];
+
+        // Assuming each card contains one label and one span
+        cards.forEach(card => {
+            let label = card.select('label').text();
+            let span = card.select('span').text();
+            jsonArray.push({ label: label, span: span });
+        });
+
+        return jsonArray;
     }catch(err){
         console.log(err)
     }
@@ -113,9 +139,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
         let callPrice = msg.split('ㅂㅂ')[1]
         auctionPrice(room, replier, callPrice)
     }
+    if( msg == callback + '모험섬' ){
+        adventureIslandToday(room, replier)
+    }
 
     /* 니나브 */
-    if( msg.includes('니나브') ){
+    /* if( msg.includes('/니나브') ){
         replier.reply(room, callNinav())
     }
     if (
@@ -140,7 +169,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
         msg.includes('커엽')
     ) {
         replier.reply(room, callNinavCuty())
-    }
+    } */
 }
 
 
@@ -290,4 +319,16 @@ function auctionPrice(room, replier, callPrice){
         replier.reply(room, text); 
     }
     
+}
+
+
+
+/*****************************
+    @name 모험섬
+    @function adventureIslandToday
+    @description 프로키온의 나침반 (모험섬)
+*****************************/
+async function adventureIslandToday(room, replier){
+    const data = await callApiCrawling(kloaUrl)
+    replier.reply(room, text);
 }
