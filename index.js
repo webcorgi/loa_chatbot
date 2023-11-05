@@ -9,7 +9,6 @@ const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktYMk40TkRDSTJ5NTA5
 const callMark = '/'
 const SP = '\n' // 다음 줄로 넘기기 (Spacing)
 
-const kloaUrl = 'https://kloa.gg/'
 
 // API
 /* 231009 웹 구문 => 안드로이드구문으로 변경
@@ -115,7 +114,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
         let callPrice = msg.split('/ㅂㅂㄱ')[1]
         auctionPrice(room, replier, callPrice)
     }
-    if( msg == callback + '모험섬' ){
+    if( msg == callMark + '모험섬' ){
         adventureIslandToday(room, replier)
     }
 
@@ -304,6 +303,8 @@ function auctionPrice(room, replier, callPrice){
     @function adventureIslandToday
     @description 프로키온의 나침반 (모험섬)
 *****************************/
+const kloaUrl = 'https://kloa.gg/'
+
 const callApiByIsland = (url) => {
     try{
         let response = org.jsoup.Jsoup.connect(url)
