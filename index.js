@@ -39,30 +39,6 @@ const callApi = (url) => {
     }
 }
 
-const callApiCrawling = (url) => {
-    try{
-        let response = org.jsoup.Jsoup.connect(url)
-        .header("Authorization", "Bearer " + apiKey)
-        .header("Content-Type", "application/json")
-        .ignoreContentType(true)
-        .get();
-
-        let cards = response.select("div[id='schedule-box_cards']")
-        let jsonArray = [];
-
-        // Assuming each card contains one label and one span
-        cards.forEach(card => {
-            let label = card.select('label').text();
-            let span = card.select('span').text();
-            jsonArray.push({ label: label, span: span });
-        });
-
-        return jsonArray;
-    }catch(err){
-        console.log(err)
-    }
-}
-
 
 /*********************************************************************************
  * 니나브 대사
@@ -135,8 +111,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
         let username = msg.split(' ')[1]
         characterInformation(room, replier, username)
     }
-    if (msg.includes('ㅂㅂ')) {
-        let callPrice = msg.split('ㅂㅂ')[1]
+    if (msg.includes('/ㅂㅂㄱ')) {
+        let callPrice = msg.split('/ㅂㅂㄱ')[1]
         auctionPrice(room, replier, callPrice)
     }
     if( msg == callback + '모험섬' ){
@@ -144,7 +120,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
     }
 
     /* 니나브 */
-    /* if( msg.includes('/니나브') ){
+    if( msg.includes('/니나브') ){
         replier.reply(room, callNinav())
     }
     if (
@@ -169,7 +145,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
         msg.includes('커엽')
     ) {
         replier.reply(room, callNinavCuty())
-    } */
+    }
 }
 
 
@@ -200,9 +176,10 @@ function getTest(room, replier){
 *****************************/
 const fn = [
     '★봇 전체기능',
+    callMark+'니나브',
     callMark+'주간',
     callMark+'정보 아이디',
-    'ㅂㅂ금액',
+    callMark+'모험섬',
 ]
 function getAll(room, replier){
     const combinedText = fn.map(item => item).join(SP);
@@ -287,7 +264,6 @@ function characterInformation(room, replier, username) {
     }
     
     text = text.trim();
-
     replier.reply(room, text);
 }
 
@@ -328,7 +304,84 @@ function auctionPrice(room, replier, callPrice){
     @function adventureIslandToday
     @description 프로키온의 나침반 (모험섬)
 *****************************/
-async function adventureIslandToday(room, replier){
-    const data = await callApiCrawling(kloaUrl)
+const callApiByIsland = (url) => {
+    try{
+        let response = org.jsoup.Jsoup.connect(url)
+        .header("Authorization", "Bearer " + apiKey)
+        .header("Content-Type", "application/json")
+        .ignoreContentType(true)
+        .get();
+
+        let cards = response.select("div[id='schedule-box_cards']")
+        let jsonArray = null;
+
+        cards.forEach((card, i) => {
+            let labels = card.select('label')
+            let spans = card.select('span')
+
+            if( labels.size() > 4 ){
+                let label1 = labels.get(0).text()
+                let label2 = labels.get(1).text()
+                let label3 = labels.get(2).text()
+                let label4 = labels.get(3).text()
+                let label5 = labels.get(4).text()
+                let label6 = labels.get(5).text()
+                let span1 = spans.get(0).text()
+                let span2 = spans.get(1).text()
+                let span3 = spans.get(2).text()
+                let span4 = spans.get(3).text()
+                let span5 = spans.get(4).text()
+                let span6 = spans.get(5).text()
+                jsonArray = [
+                    [label1 + ': ' + span1],
+                    [label2 + ': ' + span2],
+                    [label3 + ': ' + span3],
+                    [label4 + ': ' + span4],
+                    [label5 + ': ' + span5],
+                    [label6 + ': ' + span6],
+                ]
+            }else{
+                let label1 = labels.get(0).text()
+                let label2 = labels.get(1).text()
+                let label3 = labels.get(2).text()
+                let span1 = spans.get(0).text()
+                let span2 = spans.get(1).text()
+                let span3 = spans.get(2).text()
+                jsonArray = [
+                    [label1 + ': ' + span1],
+                    [label2 + ': ' + span2],
+                    [label3 + ': ' + span3]
+                ]
+            }
+        });
+
+        return jsonArray;
+    }catch(err){
+        console.log(err)
+    }
+}
+
+function adventureIslandToday(room, replier){
+    const data = callApiByIsland(kloaUrl)
+
+    let text = ''
+    if( data.length > 4 ) { // 주말 오전3개, 오후3개
+        text = 
+            '[오늘의 모험섬]' + SP + 
+            '오전★' + SP +
+            data[0] + SP + 
+            data[1] + SP + 
+            data[2] + SP + SP + 
+            '오후★' + SP +
+            data[3] + SP + 
+            data[4] + SP + 
+            data[5]
+    }else{ // 평일 3개
+        text = 
+        '[오늘의 모험섬]' + SP + 
+        data[0] + SP + 
+        data[1] + SP + 
+        data[2] 
+    }
     replier.reply(room, text);
 }
